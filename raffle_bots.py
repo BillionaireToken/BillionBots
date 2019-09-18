@@ -54,7 +54,7 @@ def savePasswords(password0, password1, password2, password3):
     f.write(password2)
     f.close()
 
-    f = open("passwords/password4.txt", "w")
+    f = open("passwords/password3.txt", "w")
     f.write(password3)
     f.close()
 
@@ -84,7 +84,7 @@ def loadPasswords():
     p2 = f2.readline()
     f2.close()
 
-    f3 = open('passwords/password2.txt')
+    f3 = open('passwords/password3.txt')
     p3 = f3.readline()
     f3.close()
 
@@ -105,7 +105,7 @@ def getSecretAndHashe(plaintext_string):
 
     return secret.hexdigest(), hashe
 
-def registerXBL(password0, password1, password2):
+def registerXBL(password0, password1, password2, password3):
     # registers 0.0001 XBL (or whatever the minimum amount is) and submits the saved passwords for each of the three bots.
     # Have to check the cleos syntax (github) and generate the hashes.
     hash0 = getHash(password0)
@@ -115,7 +115,7 @@ def registerXBL(password0, password1, password2):
 
     os.system('cleos -u https://eos.greymass.com:443 push action billionairet transfer \'{\"from\":\"billionbot11\",\"to\":\"billionraffl\",\"quantity\":\"0.0010 XBL\",\"memo\":\"'+hash0+'\"}\' -p billionbot11')
     os.system('cleos -u https://eos.greymass.com:443 push action billionairet transfer \'{\"from\":\"billionbot12\",\"to\":\"billionraffl\",\"quantity\":\"0.0010 XBL\",\"memo\":\"'+hash1+'\"}\' -p billionbot12')
-    os.system('cleos -u https://eos.greymass.com:443 push action billionairet transfer \'{\"from\":\"billionbot13\",\"to\":\"billionraffl\",\"quantity\":\"0.0010 XBL\",\"memo\":\"'+hash2+'\"}\' -p billionbot13')
+    os.system('cleos -u https://eos.greymass.com:443 push action billionairet transfer \'{\"from\":\"billionbot13\",\"to\":\"billionraffl\",\"quantity\":\"25.0000 XBL\",\"memo\":\"'+hash2+'\"}\' -p billionbot13')
     os.system('cleos -u https://eos.greymass.com:443 push action billionairet transfer \'{\"from\":\"billionbot14\",\"to\":\"billionraffl\",\"quantity\":\"0.0010 XBL\",\"memo\":\"'+hash3+'\"}\' -p billionbot14')
 
     #cleos push action $xbltoken transfer '{"from":"accountnum13","to":"'billionraffl'","quantity":"0.001 XBL","memo":"d533f24d6f28ddcef3f066474f7b8355383e485681ba8e793e037f5cf36e4883"}' -p accountnum13
@@ -151,7 +151,6 @@ def submitBoth(one, two, three, four):
     print "Commands given:\n%s \n %s \n %s " % (bot11_register, bot12_register, bot13_register, bot14_register)
 
 def sendReset():
-    # We have to use subprocess, otherwise the cleosm alias won't work.
     os.system('cleos -u https://eos.greymass.com:443 push action billionraffl reset \'{\"contract\":\"billionraffl\"}\' -p billionbot11@active')
     # Make sure this was succesful.
 
@@ -173,22 +172,30 @@ def checkRegistered(player_info):
     if (player_info.find('"player": "billionbot11"') != -1):
         dPrint("Bot 11 is registered this round.")
         b11_r = True
+    else:
+        dPrint("Bot 11 is NOT registered this round...")
 
     if (player_info.find('"player": "billionbot12"') != -1):
         dPrint("Bot 12 is registered this round.")
         b12_r = True
+    else:
+        dPrint("Bot 12 is NOT registered this round...")
 
     if (player_info.find('"player": "billionbot13"') != -1):
         dPrint("Bot 13 is registered this round.")
         b13_r = True
+    else:
+        dPrint("Bot 13 is NOT registered this round...")
 
     if (player_info.find('"player": "billionbot14"') != -1):
         dPrint("Bot 14 is registered this round.")
         b14_r = True
+    else:
+        dPrint("Bot 14 is NOT registered this round...")
 
     #print player_info
 
-    if (b11_r == False and b12_r == False and b13_r == False and b14_r == False):
+    if (b11_r == False or b12_r == False or b13_r == False or b14_r == False):
         # Maybe we should have (or) instead of (and) for this qualification.
         dPrint("checkRegistered() returning False")
         return False

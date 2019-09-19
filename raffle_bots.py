@@ -1,6 +1,7 @@
 #!/usr/bin/python2.7
 
 import os
+import time
 import string
 import hashlib
 import datetime
@@ -122,7 +123,7 @@ def registerXBL(password0, password1, password2, password3):
 
 def submitBoth(one, two, three, four):
     dPrint(" ","Submit both running...", "  "," ","")
-    password0, password1, password2 = loadPasswords()
+    password0, password1, password2, password3 = loadPasswords()
 
     bot11_secret, bot11_hashe = getSecretAndHashe(password0)
     bot12_secret, bot12_hashe = getSecretAndHashe(password1)
@@ -148,11 +149,12 @@ def submitBoth(one, two, three, four):
     if four == 0:
         os.system(bot14_register)
 
-    print "Commands given:\n%s \n %s \n %s " % (bot11_register, bot12_register, bot13_register, bot14_register)
+    print "Commands given:\n%s \n %s \n %s \n %s" % (bot11_register, bot12_register, bot13_register, bot14_register)
 
 def sendReset():
     os.system('cleos -u https://eos.greymass.com:443 push action billionraffl reset \'{\"contract\":\"billionraffl\"}\' -p billionbot11@active')
     # Make sure this was succesful.
+    time.sleep(2)
 
 def getStage(game_info):
     stage = int(game_info.split("\"stage\": ")[1].split(",")[0])
